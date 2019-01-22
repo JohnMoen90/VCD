@@ -2,14 +2,15 @@ package intPrism.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
+import intPrism.Creature;
+import intPrism.CreatureFactory;
 import intPrism.World;
 import intPrism.WorldBuilder;
 
 
 public class PlayScreen implements Screen {
     private World world;
-    private int centerX;
-    private int centerY;
+    private Creature player;
     private int screenWidth;
     private int screenHeight;
 
@@ -17,6 +18,9 @@ public class PlayScreen implements Screen {
         screenWidth = 80;
         screenHeight = 21;
         createWorld();
+
+        CreatureFactory creatureFactory = new CreatureFactory(world);
+        player = creatureFactory.newPlayer();
     }
 
 
@@ -26,13 +30,13 @@ public class PlayScreen implements Screen {
 
         displayTiles(terminal, left, top);
 
-        terminal.write('X', centerX - left, centerY - top);
+        terminal.write('X', player.x - left, player.y - top);
 
     }
 
     private void scrollBy(int mx, int my) {
-            centerX = Math.max(0, Math.min(centerX + mx, world.width() - 1));
-            centerY = Math.max(0, Math.min(centerY + my, world.height() - 1));
+            player.x = Math.max(0, Math.min(player.x + mx, world.width() - 1));
+            player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
         }
 
     public Screen respondToUserInput(KeyEvent key) {
@@ -60,15 +64,15 @@ public class PlayScreen implements Screen {
 
 
     private void createWorld(){
-        world = new WorldBuilder(90, 31).makeCaves().build();
+        world = new WorldBuilder(90, 32).makeCaves().build();
     }
 
     public int getScrollX() {
-        return Math.max(0,Math.min(centerX - screenWidth / 2, world.width() - screenWidth));
+        return Math.max(0,Math.min(player.x - screenWidth / 2, world.width() - screenWidth));
     }
 
     public int getScrollY() {
-        return Math.max(0,Math.min(centerY - screenHeight / 2, world.height() - screenHeight));
+        return Math.max(0,Math.min(player.y - screenHeight / 2, world.height() - screenHeight));
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
