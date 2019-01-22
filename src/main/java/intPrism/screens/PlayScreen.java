@@ -30,7 +30,7 @@ public class PlayScreen implements Screen {
 
         displayTiles(terminal, left, top);
 
-        terminal.write('X', player.x - left, player.y - top);
+        terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
 
     }
 
