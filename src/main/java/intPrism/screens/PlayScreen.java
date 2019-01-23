@@ -40,6 +40,8 @@ public class PlayScreen implements Screen {
 
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
 
+        String stats = String.format(" %3d/%3d hp", player.hp(), player.getMaxHp());
+        terminal.write(stats, 1, 23);
     }
 
     private void scrollBy(int mx, int my) {
