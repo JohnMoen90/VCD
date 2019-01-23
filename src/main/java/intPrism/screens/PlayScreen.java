@@ -10,20 +10,27 @@ import intPrism.CreatureFactory;
 import intPrism.World;
 import intPrism.WorldBuilder;
 
-
+/**
+ * This is the main game screen, everything is rendered and displayed here
+ */
 public class PlayScreen implements Screen {
-    private World world;
-    private Creature player;
+
     private int screenWidth;
     private int screenHeight;
+
+    private World world;
+    private Creature player;
+
     private List<String> messages;
 
     public PlayScreen(){
-        screenWidth = 80;
+        // World variables
+        screenWidth = 80;   // Current defaults TODO: init file for variables
         screenHeight = 23;
         messages = new ArrayList<String>();
         createWorld();
 
+        // Creature Generator
         CreatureFactory creatureFactory = new CreatureFactory(world);
         createCreatures(creatureFactory);
     }
@@ -36,42 +43,34 @@ public class PlayScreen implements Screen {
         }
     }
 
-
+    /**
+     * This method calls writes all screen components to terminal
+     *
+     */
     public void displayOutput(AsciiPanel terminal) {
         int left = getScrollX();
         int top = getScrollY();
 
+        // Print Map to screen
         displayTiles(terminal, left, top);
+
+        // Print messages to screen
         displayMessages(terminal, messages);
 
         terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 23);
 
+        // Print messages to screen
         String stats = String.format(" %3d/%3d hp", player.hp(), player.maxHp());
         terminal.write(stats, 1, 23);
     }
 
-    private void scrollBy(int mx, int my) {
-            player.x = Math.max(0, Math.min(player.x + mx, world.width() - 1));
-            player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * This method could be used as a view cursor so I'm saving it here
+     */
+//    private void scrollBy(int mx, int my) {
+//            player.x = Math.max(0, Math.min(player.x + mx, world.width() - 1));
+//            player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
+//        }
 
 
     public Screen respondToUserInput(KeyEvent key) {

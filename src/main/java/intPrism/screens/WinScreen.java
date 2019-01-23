@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 
 import java.awt.event.KeyEvent;
 
+
 public class WinScreen implements Screen {
     public void displayOutput(AsciiPanel terminal) {
         terminal.write("You won.", 1, 1);
