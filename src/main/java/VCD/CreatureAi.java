@@ -1,4 +1,4 @@
-package intPrism;
+package VCD;
 
 public class CreatureAi {
     protected Creature creature;

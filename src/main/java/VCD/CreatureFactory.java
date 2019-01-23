@@ -1,4 +1,4 @@
-package intPrism;
+package VCD;
 
 import asciiPanel.AsciiPanel;
 

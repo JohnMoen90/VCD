@@ -1,4 +1,4 @@
-package intPrism.screens;
+package VCD.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;

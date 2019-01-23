@@ -1,4 +1,4 @@
-package intPrism;
+package VCD;
 
 import java.util.List;
 

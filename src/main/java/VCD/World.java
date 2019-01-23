@@ -1,4 +1,4 @@
-package intPrism;
+package VCD;
 
 import java.awt.Color;
 import java.util.ArrayList;

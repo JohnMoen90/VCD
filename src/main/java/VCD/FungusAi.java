@@ -1,4 +1,4 @@
-package intPrism;
+package VCD;
 
 public class FungusAi extends CreatureAi {
     private CreatureFactory factory;

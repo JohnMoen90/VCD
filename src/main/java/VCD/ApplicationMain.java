@@ -1,11 +1,11 @@
-package intPrism;
+package VCD;
 
 import javax.swing.JFrame;
 import asciiPanel.AsciiPanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import intPrism.screens.Screen;
-import intPrism.screens.StartScreen;
+import VCD.screens.Screen;
+import VCD.screens.StartScreen;
 
 public class ApplicationMain extends JFrame implements KeyListener {
     private static final long serialVersionUID = 1060623638149583738L;

@@ -1,14 +1,14 @@
-package intPrism.screens;
+package VCD.screens;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import asciiPanel.AsciiPanel;
-import intPrism.Creature;
-import intPrism.CreatureFactory;
-import intPrism.World;
-import intPrism.WorldBuilder;
+import VCD.Creature;
+import VCD.CreatureFactory;
+import VCD.World;
+import VCD.WorldBuilder;
 
 /**
  * This is the main game screen, everything is rendered and displayed here
