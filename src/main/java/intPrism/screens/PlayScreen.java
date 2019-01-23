@@ -1,6 +1,9 @@
 package intPrism.screens;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import asciiPanel.AsciiPanel;
 import intPrism.Creature;
 import intPrism.CreatureFactory;
@@ -13,10 +16,12 @@ public class PlayScreen implements Screen {
     private Creature player;
     private int screenWidth;
     private int screenHeight;
+    private List<String> messages;
 
     public PlayScreen(){
         screenWidth = 80;
-        screenHeight = 21;
+        screenHeight = 23;
+        messages = new ArrayList<String>();
         createWorld();
 
         CreatureFactory creatureFactory = new CreatureFactory(world);
@@ -24,7 +29,7 @@ public class PlayScreen implements Screen {
     }
 
     private void createCreatures(CreatureFactory creatureFactory){
-        player = creatureFactory.newPlayer();
+        player = creatureFactory.newPlayer(messages);
 
         for (int i = 0; i < 8; i++) {   //Hard coded for testing
             creatureFactory.newFungus();
@@ -37,10 +42,11 @@ public class PlayScreen implements Screen {
         int top = getScrollY();
 
         displayTiles(terminal, left, top);
+        displayMessages(terminal, messages);
 
-        terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
+        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 23);
 
-        String stats = String.format(" %3d/%3d hp", player.hp(), player.getMaxHp());
+        String stats = String.format(" %3d/%3d hp", player.hp(), player.maxHp());
         terminal.write(stats, 1, 23);
     }
 
@@ -49,8 +55,28 @@ public class PlayScreen implements Screen {
             player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Screen respondToUserInput(KeyEvent key) {
         switch(key.getKeyCode()){
+
             case KeyEvent.VK_ESCAPE: return new LoseScreen();
             case KeyEvent.VK_ENTER: return new WinScreen();
 
@@ -105,6 +131,15 @@ public class PlayScreen implements Screen {
             }
         }
 
+    }
+
+    private void displayMessages(AsciiPanel terminal, List<String> messages) {
+        int top = screenHeight - messages.size();
+        for (int i = 0; i < messages.size(); i++){
+            terminal.writeCenter(messages.get(i), top + i);
+        }
+        messages.clear();
+        //TODO: implement message history
     }
 
 }

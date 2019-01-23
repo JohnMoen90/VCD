@@ -7,14 +7,13 @@ import java.util.List;
 public class World {
 
     private Tile[][] tiles;
-
-    private List<Creature> creatures;
-
     private int width;
     public int width() { return width; }
 
     private int height;
     public int height() {return height; }
+
+    private List<Creature> creatures;
 
     public World(Tile[][] tiles) {
         this.tiles = tiles;
