@@ -89,6 +89,7 @@ public class World {
         creatures.remove(other);
     }
 
+    // Update each creature in the list
     public void update(){
         List<Creature> toUpdate = new ArrayList<Creature>(creatures);
         for (Creature creature : toUpdate) {

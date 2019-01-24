@@ -10,7 +10,7 @@ public class FungusAi extends CreatureAi {
     }
 
     public void onUpdate() {
-        if (this.spreadcount < 5 && Math.random() < 0.02) {
+        if (this.spreadcount < 3 && Math.random() < 0.01) {
             this.spread();
         }
     }
