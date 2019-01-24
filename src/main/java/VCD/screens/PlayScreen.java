@@ -23,6 +23,7 @@ public class PlayScreen implements Screen {
     private List<String> messages;
 
     public PlayScreen(){
+
         // World variables
         screenWidth = 80;   // Current defaults TODO: init file for variables
         screenHeight = 23;
@@ -69,11 +70,11 @@ public class PlayScreen implements Screen {
 
     /**
      * This method could be used as a view cursor so I'm saving it here
+     * //    private void scrollBy(int mx, int my) {
+     * //            player.x = Math.max(0, Math.min(player.x + mx, world.width() - 1));
+     * //            player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
+     * //        }
      */
-//    private void scrollBy(int mx, int my) {
-//            player.x = Math.max(0, Math.min(player.x + mx, world.width() - 1));
-//            player.y = Math.max(0, Math.min(player.y + my, world.height() - 1));
-//        }
 
 
     public Screen respondToUserInput(KeyEvent key) {
@@ -130,17 +131,11 @@ public class PlayScreen implements Screen {
                 int wy = y + top;
 
                 if (player.canSee(wx, wy, player.z)) {
-
-                    // TODO: Make more efficient by drawing creatures after map
-                    Creature creature = world.creature(wx, wy, player.z);
-                    if (creature != null)
-                        terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
-                    else
-                        terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
-
+                    terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
                 } else {
                     terminal.write(fov.tile(wx, wy, player.z).glyph(), x, y, Color.darkGray);
                 }
+
             }
         }
 
