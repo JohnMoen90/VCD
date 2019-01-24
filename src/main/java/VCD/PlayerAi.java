@@ -5,10 +5,12 @@ import java.util.List;
 public class PlayerAi extends CreatureAi {
 
     private List<String> messages;
+    private FieldOfView fov;
 
-    public PlayerAi(Creature creature, List<String> messages) {
+    public PlayerAi(Creature creature, List<String> messages, FieldOfView fov) {
         super(creature);
         this.messages = messages;
+        this.fov = fov;
     }
 
     // TODO: Add doors
@@ -20,6 +22,11 @@ public class PlayerAi extends CreatureAi {
         } else if (tile.isDiggable()) {
             creature.dig(x, y, z);
         }
+    }
+
+    @Override
+    public boolean canSee(int wx, int wy, int wz) {
+        return fov.isVisible(wx, wy, wz);
     }
 
     public void onNotify(String message) {

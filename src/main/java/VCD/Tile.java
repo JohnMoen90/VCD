@@ -6,6 +6,7 @@ import asciiPanel.AsciiPanel;
 public enum Tile {
 
     // World tiles
+    UNKNOWN(' ', AsciiPanel.white),
     FLOOR((char)250, AsciiPanel.yellow),    // Centered dot
     WALL((char)177, AsciiPanel.yellow),     // Vertical bar
     BOUNDS('x', AsciiPanel.brightBlack),

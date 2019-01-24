@@ -5,11 +5,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import VCD.*;
 import asciiPanel.AsciiPanel;
-import VCD.Creature;
-import VCD.CreatureFactory;
-import VCD.World;
-import VCD.WorldBuilder;
 
 /**
  * This is the main game screen, everything is rendered and displayed here
@@ -21,6 +18,7 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Creature player;
+    private FieldOfView fov;
 
     private List<String> messages;
 
@@ -29,15 +27,17 @@ public class PlayScreen implements Screen {
         screenWidth = 80;   // Current defaults TODO: init file for variables
         screenHeight = 23;
         messages = new ArrayList<String>();
+
         createWorld();
+        fov = new FieldOfView(world);
 
         // Creature Generator
-        CreatureFactory creatureFactory = new CreatureFactory(world);
+        CreatureFactory creatureFactory = new CreatureFactory(world, fov);
         createCreatures(creatureFactory);
     }
 
     private void createCreatures(CreatureFactory creatureFactory){
-        player = creatureFactory.newPlayer(messages);
+        player = creatureFactory.newPlayer(messages, fov);
 
         for (int z = 0; z < world.depth(); z++) {
             for (int i = 0; i < 8; i++) {   //Hard coded for testing
@@ -122,6 +122,8 @@ public class PlayScreen implements Screen {
     }
 
     private void displayTiles(AsciiPanel terminal, int left, int top) {
+        fov.update(player.x, player.y, player.z, player.visionRadius());
+
         for (int x = 0; x < screenWidth; x++){
             for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
@@ -137,7 +139,7 @@ public class PlayScreen implements Screen {
                         terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
 
                 } else {
-                    terminal.write(world.glyph(wx, wy, player.z), x, y, Color.darkGray);
+                    terminal.write(fov.tile(wx, wy, player.z).glyph(), x, y, Color.darkGray);
                 }
             }
         }
