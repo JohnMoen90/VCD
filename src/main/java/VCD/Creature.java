@@ -13,32 +13,28 @@ public class Creature {
 
     // Creature attributes
     private char glyph;
+    public char glyph() { return glyph; }
+
     private Color color;
-    private CreatureAi ai;
+    public Color color() { return color; }
+
+    private CreatureAi ai;   // Controls creature type/behavior
+    public void setCreatureAi(CreatureAi ai) { this.ai = ai; }
 
     private int maxHp;
-
-    public int maxHp() {
-        return maxHp;
-    }
+    public int maxHp() { return maxHp; }
 
     private int hp;
-
-    public int hp() {
-        return hp;
-    }
+    public int hp() { return hp; }
 
     private int attackValue;
-
-    public int attackValue() {
-        return attackValue;
-    }
+    public int attackValue() { return attackValue; }
 
     private int defenseValue;
+    public int defenseValue() { return defenseValue; }
 
-    public int defenseValue() {
-        return defenseValue;
-    }
+    private int visionRadius;
+    public int visionRadius() {return visionRadius;}
 
 
     public Creature(World world, char glyph, Color color, int maxHp, int attack, int defense) {
@@ -49,31 +45,41 @@ public class Creature {
         this.hp = maxHp;
         this.attackValue = attack;
         this.defenseValue = defense;
+        this.visionRadius = 9;  // TODO: Pass this value through constructor
+    }
+
+    // Call an update on creature
+    public void update() {
+        ai.onUpdate();
+    }
+
+    // Return true if coordinate is a legal move
+    public boolean canEnter(int wx, int wy, int wz) {
+        return this.world.tile(wx, wy, wz).isGround() && this.world.creature(wx, wy, wz) == null;
+    }
+
+    // Returns the tile the creature is in
+    public Tile tile(int wx, int wy, int wz) {
+        return world.tile(wx, wy, wz);
     }
 
 
-    // Give creature ai/ distinguish it from other creatures
-    public void setCreatureAi(CreatureAi ai) {
-        this.ai = ai;
-    }
-
-    // Functions for retrieving creature values
-    public char glyph() {
-        return glyph;
-    }
-
-    public Color color() {
-        return color;
+    // Returns true if creature can see a tile
+    public boolean canSee(int wx, int wy, int wz) {
+        return ai.canSee(wx, wy, wz);
     }
 
 
     // Creature actions
+
+    // Dig through wall
     public void dig(int wx, int wy, int wz) {
         world.dig(wx, wy, wz);
         doAction("dig");
     }
 
 
+    // Move character into target coordinate
     public void moveBy(int mx, int my, int mz) {
 
         // Save coordinate to move to
@@ -125,15 +131,6 @@ public class Creature {
         world.remove(this);
     }
 
-    // Call an update on creature
-    public void update() {
-        ai.onUpdate();
-    }
-
-    // Return true if coordinate is a legal move
-    public boolean canEnter(int wx, int wy, int wz) {
-        return this.world.tile(wx, wy, wz).isGround() && this.world.creature(wx, wy, wz) == null;
-    }
 
     // Send message to creature
     public void notify(String message, Object... params) {
