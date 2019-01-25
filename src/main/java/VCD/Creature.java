@@ -153,7 +153,7 @@ public class Creature {
                     continue;
                 if (other == this)
                     other.notify("You " + message + ".", params); // Person doing action gets 1st person
-                else    // Make 2nd person for all others
+                else if (other.canSee(x, y, z))   // Make 2nd person for all others
                     other.notify(String.format("The '%s' %s.", glyph, makeSecondPerson(message)), params);
             }
         }

@@ -122,17 +122,22 @@ public class PlayScreen implements Screen {
         return Math.max(0,Math.min(player.y - screenHeight / 2, world.height() - screenHeight));
     }
 
-    private void displayTiles(AsciiPanel terminal, int left, int top) {
-        fov.update(player.x, player.y, player.z, player.visionRadius());
 
+    private void displayTiles(AsciiPanel terminal, int left, int top) {
+        fov.update(player.x, player.y, player.z, player.visionRadius());    // Update FOV
+
+        // For every tile on screen
         for (int x = 0; x < screenWidth; x++){
             for (int y = 0; y < screenHeight; y++) {
+
+                // At specified point in relation to top left pixel
                 int wx = x + left;
                 int wy = y + top;
 
+                // If the player can see it write world tile
                 if (player.canSee(wx, wy, player.z)) {
                     terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
-                } else {
+                } else {    // If not display fov tile
                     terminal.write(fov.tile(wx, wy, player.z).glyph(), x, y, Color.darkGray);
                 }
 

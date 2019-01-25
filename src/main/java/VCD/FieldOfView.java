@@ -12,6 +12,7 @@ public class FieldOfView {
                 && visible[x][y]; // Check if tile is visible (nothing in the way)
     }
 
+    // Returns all tiles in fov
     private Tile[][][] tiles;
     public Tile tile(int x, int y, int z){
         return tiles[x][y][z];
@@ -54,8 +55,8 @@ public class FieldOfView {
                 // For every point in the line, starting from first point
                 for (Point p : new Line(wx, wy, wx + x, wy + y)) {
                     Tile tile = world.tile(p.x, p.y, wz);
-                    visible[p.x][p.y] = true;
-                    tiles[p.x][p.y][wz] = tile;
+                    visible[p.x][p.y] = true;   // Set as visible
+                    tiles[p.x][p.y][wz] = tile; // Change tile to save what you've seen
 
                     if (!tile.isGround())   //You can only see over ground
                         break;
