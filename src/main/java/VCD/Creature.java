@@ -12,6 +12,9 @@ public class Creature {
     public int z;
 
     // Creature attributes
+    private String name;
+    public String name() { return name; }
+
     private char glyph;
     public char glyph() { return glyph; }
 
@@ -58,7 +61,7 @@ public class Creature {
         return this.world.tile(wx, wy, wz).isGround() && this.world.creature(wx, wy, wz) == null;
     }
 
-    // Returns the tile the creature is in
+    // Returns the tile from coordinate
     public Tile tile(int wx, int wy, int wz) {
         return world.tile(wx, wy, wz);
     }
@@ -67,6 +70,11 @@ public class Creature {
     // Returns true if creature can see a tile
     public boolean canSee(int wx, int wy, int wz) {
         return ai.canSee(wx, wy, wz);
+    }
+
+    // Returns creature from coordinate
+    public Creature creature(int wx, int wy, int wz) {
+        return world.creature(wx, wy, wz);
     }
 
 
@@ -78,9 +86,11 @@ public class Creature {
         doAction("dig");
     }
 
-
     // Move character into target coordinate
     public void moveBy(int mx, int my, int mz) {
+
+        if (mx == 0 && my == 0 && mz == 0)
+            return;
 
         // Save coordinate to move to
         Tile tile = world.tile(x + mx, y + my, z + mz);
@@ -126,9 +136,10 @@ public class Creature {
     public void modifyHp(int amount) {
         hp += amount;
 
-        if (hp < 1)
+        if (hp < 1) {
             doAction("die");
-        world.remove(this);
+            world.remove(this);
+        }
     }
 
 

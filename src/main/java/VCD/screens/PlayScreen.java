@@ -41,8 +41,15 @@ public class PlayScreen implements Screen {
         player = creatureFactory.newPlayer(messages, fov);
 
         for (int z = 0; z < world.depth(); z++) {
+
+            // Bats per fungus
             for (int i = 0; i < 8; i++) {   //Hard coded for testing
                 creatureFactory.newFungus(z);
+            }
+
+            // Bats per floor
+            for (int i = 0; i < 20; i++) {   //Hard coded for testing
+                creatureFactory.newBat(z);
             }
         }
     }
@@ -105,6 +112,8 @@ public class PlayScreen implements Screen {
         }
 
         world.update();
+        if (player.hp() < 1)
+            return new LoseScreen();
         return this;
     }
 

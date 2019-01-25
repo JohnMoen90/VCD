@@ -64,6 +64,7 @@ public class World {
         return creature != null ? creature.color() : tile(x, y, z).color();
     }
 
+
     // Removes wall, replaces it will floor
     public void dig(int x, int y, int z) {
         if (tile(x,y,z).isDiggable())
