@@ -30,6 +30,12 @@ public class Creature {
     private int hp;
     public int hp() { return hp; }
 
+    private int maxFood;
+    public int maxFood() { return maxFood; }
+
+    private int food;
+    public int food() { return food; }
+
     private int attackValue;
     public int attackValue() { return attackValue; }
 
@@ -43,8 +49,9 @@ public class Creature {
     public Inventory inventory() { return inventory; }
 
 
-    public Creature(World world, char glyph, Color color, int maxHp, int attack, int defense) {
+    public Creature(World world, String name, char glyph, Color color, int maxHp, int attack, int defense) {
         this.world = world;
+        this.name = name;
         this.glyph = glyph;
         this.color = color;
         this.maxHp = maxHp;
@@ -53,10 +60,13 @@ public class Creature {
         this.defenseValue = defense;
         this.visionRadius = 9;  // TODO: Pass this value through constructor
         this.inventory = new Inventory(20);
+        this.maxFood = 1000;
+        this.food = maxFood / 3 * 2;
     }
 
     // Call an update on creature
     public void update() {
+        modifyFood(-1);
         ai.onUpdate();
     }
 
@@ -81,11 +91,30 @@ public class Creature {
         return world.creature(wx, wy, wz);
     }
 
+    public void modifyFood(int amount) {
+        food += amount;
+        if (food > maxFood) {
+            food = maxFood;
+        } else if (food < 1 && isPlayer()) {
+            modifyHp(-1000);
+        }
+    }
+
+    public boolean isPlayer(){
+        return glyph == '@';
+    }
 
     // Creature actions
 
+    public void eat(Item item) {
+        modifyFood(item.foodValue());
+        inventory.remove(item);
+    }
+
+
     // Dig through wall
     public void dig(int wx, int wy, int wz) {
+        modifyFood(-10);
         world.dig(wx, wy, wz);
         doAction("dig");
     }
@@ -146,11 +175,13 @@ public class Creature {
     // Simple Attack function
     public void attack(Creature other) { // Other is the creature being attacked
 
+        modifyFood(-5);
+
         int amount = Math.max(0, attackValue() - other.defenseValue()); // Get zero or attack - defense, whatever's greater
 
         amount = (int) (Math.random() * amount) + 1; // Get a random attack
 
-        doAction("attack the '%s' for %d damage", other.glyph, amount); // Report the action
+        doAction("attack the '%s' for %d damage", other.name, amount); // Report the action
 
         other.modifyHp(-amount);    // Change defenders hp
     }
@@ -161,8 +192,15 @@ public class Creature {
 
         if (hp < 1) {
             doAction("die");
+            leaveCorpse();
             world.remove(this);
         }
+    }
+
+    private void leaveCorpse(){
+        Item corpse = new Item('%', color, name + " corpse");
+        corpse.modifyFoodValue(maxHp * 3);
+        world.addAtEmptySpace(corpse, x, y, z);
     }
 
 
@@ -188,7 +226,7 @@ public class Creature {
                 if (other == this)
                     other.notify("You " + message + ".", params); // Person doing action gets 1st person
                 else if (other.canSee(x, y, z))   // Make 2nd person for all others
-                    other.notify(String.format("The '%s' %s.", glyph, makeSecondPerson(message)), params);
+                    other.notify(String.format("The '%s' %s.", name, makeSecondPerson(message)), params);
             }
         }
     }
