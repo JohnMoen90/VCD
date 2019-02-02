@@ -39,6 +39,9 @@ public class Creature {
     private int visionRadius;
     public int visionRadius() {return visionRadius;}
 
+    private Inventory inventory;
+    public Inventory inventory() { return inventory; }
+
 
     public Creature(World world, char glyph, Color color, int maxHp, int attack, int defense) {
         this.world = world;
@@ -49,6 +52,7 @@ public class Creature {
         this.attackValue = attack;
         this.defenseValue = defense;
         this.visionRadius = 9;  // TODO: Pass this value through constructor
+        this.inventory = new Inventory(20);
     }
 
     // Call an update on creature
@@ -84,6 +88,25 @@ public class Creature {
     public void dig(int wx, int wy, int wz) {
         world.dig(wx, wy, wz);
         doAction("dig");
+    }
+
+    public void pickup(){
+        Item item = world.item(x, y, z);
+
+        if (inventory.isFull() || item == null) {
+            doAction("grab at the ground");
+        } else {
+            doAction("pickup a %s", item.name());
+            world.remove(x,y,z);
+            inventory.add(item);
+        }
+    }
+
+    // TODO Make it so Items can be dropped if no item spaces are available
+    public void drop(Item item) {
+        doAction("drop a " + item.name());
+        inventory.remove(item);
+        world.addAtEmptySpace(item, x, y, z);
     }
 
     // Move character into target coordinate
