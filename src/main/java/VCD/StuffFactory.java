@@ -13,6 +13,12 @@ public class StuffFactory {
         this.fov = fov;
     }
 
+    public Item newVictoryItem(int depth) {
+        Item item = new Item('*', AsciiPanel.brightWhite, "Wizards Orb");
+        world.addAtEmptyLocation(item, depth);
+        return item;
+    }
+
     public Creature newPlayer(List<String> messages, FieldOfView fov){
         Creature player = new Creature(world, '@', AsciiPanel.brightWhite, 100, 20, 5);
         world.addAtEmptyLocation(player, 0);

@@ -63,7 +63,9 @@ public class PlayScreen implements Screen {
                 factory.newRock(z);
             }
         }
+        factory.newVictoryItem(world.depth() - 1);
     }
+
 
     /**
      * This method calls writes all screen components to terminal
@@ -78,8 +80,6 @@ public class PlayScreen implements Screen {
 
         // Print messages to screen
         displayMessages(terminal, messages);
-
-        terminal.writeCenter("-- press [escape] to lose or [enter] to win --", 23);
 
         // Print messages to screen
         String stats = String.format(" %3d/%3d hp", player.hp(), player.maxHp());
@@ -103,11 +103,6 @@ public class PlayScreen implements Screen {
             subscreen = subscreen.respondToUserInput(key);
         } else {
         switch(key.getKeyCode()) {
-
-            case KeyEvent.VK_ESCAPE:
-                return new LoseScreen();
-            case KeyEvent.VK_ENTER:
-                return new WinScreen();
 
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_H:
@@ -146,7 +141,11 @@ public class PlayScreen implements Screen {
             case 'g':
             case ',' : player.pickup(); break;
             case '<': player.moveBy(0, 0, 1); break;
-            case '>': player.moveBy(0, 0, -1); break;
+            case '>':
+                if (userIsTryingToExit())
+                    return userExits();
+                else
+                    player.moveBy(0, 0, -1); break;
         }
 
         if (subscreen == null)
@@ -156,6 +155,18 @@ public class PlayScreen implements Screen {
             return new LoseScreen();
 
         return this;
+    }
+
+    private boolean userIsTryingToExit(){
+        return player.z == 0 && world.tile(player.x, player.y, player.z) == Tile.STAIRS_UP;
+    }
+
+    private Screen userExits(){
+        for (Item item : player.inventory().getItems()) {
+            if (item != null && item.name().equals("Wizards Orb"))
+                return new WinScreen();
+        }
+        return new LoseScreen();
     }
 
 
