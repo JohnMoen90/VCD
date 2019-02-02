@@ -59,8 +59,16 @@ public class PlayScreen implements Screen {
 
     private void createItems(StuffFactory factory) {
         for (int z = 0; z < world.depth(); z++) {
-            for (int i = 0; i < world.width() * world.height() / 20; i++) {
+
+            // Rocks
+            for (int i = 0; i < world.width() * world.height() / 40; i++) {
                 factory.newRock(z);
+            }
+
+            // Weapons and armor
+            for (int i = 0; i < 5; i++) {
+                factory.randomArmor(z);
+                factory.randomWeapon(z);
             }
         }
         factory.newVictoryItem(world.depth() - 1);
@@ -135,6 +143,8 @@ public class PlayScreen implements Screen {
                 break;
             case KeyEvent.VK_D: subscreen = new DropScreen(player); break;
             case KeyEvent.VK_E: subscreen = new EatScreen(player); break;
+            case KeyEvent.VK_W: subscreen = new EquipScreen(player); break;
+
         }
         }
 
