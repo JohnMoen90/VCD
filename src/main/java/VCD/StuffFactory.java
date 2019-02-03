@@ -41,6 +41,15 @@ public class StuffFactory {
         return bat;
     }
 
+    public Creature newZombie(int depth, Creature player){
+        Creature zombie = new Creature(world, "zombie", 'z', AsciiPanel.white, 50, 10, 10);
+        world.addAtEmptyLocation(zombie, depth);
+        new ZombieAi(zombie, player);
+        return zombie;
+    }
+
+
+
     public Item newRock(int depth) {
         Item rock = new Item(',', AsciiPanel.yellow, "rock");
         world.addAtEmptyLocation(rock, depth);
