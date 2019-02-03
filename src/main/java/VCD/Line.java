@@ -1,7 +1,4 @@
 package VCD;
-
-import javafx.scene.input.PickResult;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
