@@ -164,6 +164,7 @@ public class PlayScreen implements Screen {
                     return userExits();
                 else
                     player.moveBy(0, 0, -1); break;
+            case '?': subscreen = new HelpScreen(); break;
         }
 
         if (player.level() > level)
