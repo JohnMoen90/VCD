@@ -29,6 +29,11 @@ public class PlayerAi extends CreatureAi {
         return fov.isVisible(wx, wy, wz);
     }
 
+    @Override
+    public Tile rememberedTile(int wx, int wy, int wz) {
+        return fov.tile(wx, wy, wz);
+    }
+
     public void onNotify(String message) {
         messages.add(message);
     }
