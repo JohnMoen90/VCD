@@ -21,6 +21,10 @@ public class Item {
     public int attackValue() { return attackValue; }
     public void modifyAttackValue(int amount) { attackValue += amount; }
 
+    private int thrownAttackValue;
+    public int thrownAttackValue() { return thrownAttackValue; }
+    public void modifyThrownAttackValue(int amount) { thrownAttackValue += amount; }
+
     private int defenseValue;
     public int defenseValue() { return defenseValue; }
     public void modifyDefenseValue(int amount) { defenseValue += amount; }
@@ -30,6 +34,7 @@ public class Item {
         this.glyph = glyph;
         this.color = color;
         this.name = name;
+        this.thrownAttackValue = 1;
     }
 
     public String details() {
@@ -43,6 +48,9 @@ public class Item {
 
         if (foodValue != 0)
             details += "     food:" + foodValue;
+
+        if (thrownAttackValue > 2)
+            details += "     attack thrown:";
 
         return details;
     }

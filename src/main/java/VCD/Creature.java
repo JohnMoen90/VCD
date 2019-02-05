@@ -232,6 +232,44 @@ public class Creature {
         }
     }
 
+
+    public void throwItem(Item item, int wx, int wy, int wz) {
+        Point end = new Point(x, y, 0);
+
+        for (Point p : new Line(x, y, wx, wy)){
+            if (!realTile(p.x, p.y, z).isGround())
+                break;
+            end = p;
+        }
+
+        wx = end.x;
+        wy = end.y;
+
+        Creature c = creature(wx, wy, wz);
+
+        if (c != null)
+            throwAttack(item, c);
+        else
+            doAction("throw a %s", item.name());
+
+        unequip(item);
+        inventory.remove(item);
+        world.addAtEmptySpace(item, wx, wy, wz);
+    }
+
+    private void throwAttack(Item item, Creature other) {
+        modifyFood(-2);
+
+        int amount = Math.max(0, attackValue / 2 + item.thrownAttackValue() - other.defenseValue);
+
+        other.modifyHp(-1);
+
+        if (other.hp < 1)
+            gainXp(other);
+
+    }
+
+
     // Move character into target coordinate
     public void moveBy(int mx, int my, int mz) {
 

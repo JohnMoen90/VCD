@@ -19,6 +19,8 @@ public class StuffFactory {
         return item;
     }
 
+
+
     public Creature newPlayer(List<String> messages, FieldOfView fov){
         Creature player = new Creature(world, "Player", '@', AsciiPanel.brightWhite, 100, 20, 5);
         world.addAtEmptyLocation(player, 0);
@@ -26,6 +28,8 @@ public class StuffFactory {
         return player;
 
     }
+
+
 
     public Creature newFungus(int depth){
         Creature fungus = new Creature(world, "fungus", 'f', AsciiPanel.green, 10, 0, 0);
@@ -50,8 +54,11 @@ public class StuffFactory {
 
 
 
+
+
     public Item newRock(int depth) {
         Item rock = new Item(',', AsciiPanel.yellow, "rock");
+        rock.modifyThrownAttackValue(4);
         world.addAtEmptyLocation(rock, depth);
         return rock;
     }
@@ -59,6 +66,7 @@ public class StuffFactory {
     public Item newDagger(int depth){
         Item item = new Item(')', AsciiPanel.white, "dagger");
         item.modifyAttackValue(5);
+        item.modifyThrownAttackValue(item.attackValue() / 2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
@@ -66,6 +74,7 @@ public class StuffFactory {
     public Item newSword(int depth){
         Item item = new Item(')', AsciiPanel.brightWhite, "sword");
         item.modifyAttackValue(10);
+        item.modifyThrownAttackValue(item.attackValue() / 2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
@@ -74,6 +83,7 @@ public class StuffFactory {
         Item item = new Item(')', AsciiPanel.yellow, "staff");
         item.modifyAttackValue(5);
         item.modifyDefenseValue(3);
+        item.modifyThrownAttackValue(item.attackValue() / 2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
@@ -81,6 +91,7 @@ public class StuffFactory {
     public Item newLightArmor(int depth){
         Item item = new Item('[', AsciiPanel.green, "tunic");
         item.modifyDefenseValue(2);
+        item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
@@ -88,6 +99,7 @@ public class StuffFactory {
     public Item newMediumArmor(int depth){
         Item item = new Item('[', AsciiPanel.white, "chainmail");
         item.modifyDefenseValue(4);
+        item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
@@ -95,9 +107,11 @@ public class StuffFactory {
     public Item newHeavyArmor(int depth){
         Item item = new Item('[', AsciiPanel.brightWhite, "platemail");
         item.modifyDefenseValue(6);
+        item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
+
 
     public Item randomWeapon(int depth){
         switch ((int)(Math.random() * 3)){

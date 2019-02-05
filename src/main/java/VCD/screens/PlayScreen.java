@@ -156,6 +156,9 @@ public class PlayScreen implements Screen {
                     player.x - getScrollX(),
                     player.y - getScrollY()
                     ); break;
+            case KeyEvent.VK_T: subscreen = new ThrowScreen(player,
+                    player.x - getScrollX(),
+                    player.y - getScrollY()); break;
 
         }
         }
