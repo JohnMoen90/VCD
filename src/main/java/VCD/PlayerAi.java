@@ -33,4 +33,9 @@ public class PlayerAi extends CreatureAi {
         messages.add(message);
     }
 
+    @Override
+    public void onGainLevel(){
+
+    }
+
 }

@@ -51,7 +51,7 @@ public class Creature {
     }
 
     private int visionRadius;
-    public int visionRadius() {return visionRadius;}
+    public int visionRadius() { return visionRadius; }
 
     private Inventory inventory;
     public Inventory inventory() { return inventory; }
@@ -62,6 +62,11 @@ public class Creature {
     private Item armor;
     public Item armor() { return armor; }
 
+    private int xp;
+    public int xp() { return xp; }
+
+    private int level;
+    public int level() { return level; }
 
 
     public Creature(World world, String name, char glyph, Color color, int maxHp, int attack, int defense) {
@@ -77,6 +82,7 @@ public class Creature {
         this.inventory = new Inventory(20);
         this.maxFood = 1000;
         this.food = maxFood / 3 * 2;
+        this.level = 1;
     }
 
     // Call an update on creature
@@ -116,6 +122,19 @@ public class Creature {
             modifyHp(-1);
         } else if (food < 1 && isPlayer()) {
             modifyHp(-1000);
+        }
+    }
+
+    public void modifyXp(int amount) {
+        xp += amount;
+
+        notify("You %s %d xp", amount < 0 ? "lose" : "gain", amount);
+
+        while (xp > (int) (Math.pow(level, 1.5) * 20)) {
+            level++;
+            doAction("advance to level %d", level);
+            ai.onGainLevel();
+            modifyHp(level * 2);
         }
     }
 
@@ -235,7 +254,47 @@ public class Creature {
         doAction("attack the '%s' for %d damage", other.name, amount); // Report the action
 
         other.modifyHp(-amount);    // Change defenders hp
+
+        if (other.hp < 1)
+            gainXp(other);
     }
+
+
+    public void gainXp(Creature other) {
+        int amount = other.maxHp
+                + other.attackValue()
+                +other.defenseValue()
+                - level * 2;
+
+        if (amount > 0)
+            modifyXp(amount);
+    }
+
+
+    /**
+     * These are the level up options for creatures
+     */
+    public void gainMaxHp() {
+        maxHp += 10;
+        hp = maxHp;
+        doAction("look healthier");
+    }
+
+    public void gainAttackValue() {
+        attackValue += 2;
+        doAction("look stronger");
+    }
+
+    public void gainDefenseValue() {
+        defenseValue += 2;
+        doAction("look tougher");
+    }
+
+    public void gainVision() {
+        visionRadius += 1;
+        doAction("look more aware");
+    }
+
 
     // Change hp and check if creature dies
     public void modifyHp(int amount) {
