@@ -8,9 +8,9 @@ public class HelpScreen implements Screen {
 
     public void displayOutput(AsciiPanel terminal) {
         terminal.clear();
-        terminal.writeCenter("Vortex Contiuum Deicide", 1);
-        terminal.write("Descend the Caverns of your mind, find the wizards orb, and return to", 1, 3);
-        terminal.write("the surface to win. Use what you find to avoid dying.", 1, 4);
+        terminal.writeCenter("Cave Explorer Junior", 1);
+        terminal.write("Your friends dared you to retrieve the fabled wizards orb from the bottom of", 1, 3);
+        terminal.write("this creepy cave. Use what you find to survive. Now, go prove yourself!", 1, 4);
 
         int y = 6;
         terminal.write("[g] or [,] to pick up", 2, y++);

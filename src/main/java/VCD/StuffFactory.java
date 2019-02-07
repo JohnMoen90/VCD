@@ -58,7 +58,7 @@ public class StuffFactory {
     }
 
     public Creature newRat(int depth, Creature player) {
-        Creature rat = new Creature(world, "bat", 'r', AsciiPanel.black, 15, 3, 0);
+        Creature rat = new Creature(world, "rat", 'r', AsciiPanel.brightBlack, 15, 3, 0);
         world.addAtEmptyLocation(rat, depth);
         new ZombieAi(rat, player);
         return rat;

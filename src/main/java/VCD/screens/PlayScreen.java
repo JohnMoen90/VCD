@@ -70,14 +70,14 @@ public class PlayScreen implements Screen {
             // Dire zombies
             if (z > world.depth() - 2) {
                 for (int i = 0; i < z + 1; i++) {
-                    stuffFactory.newZombie(z, player);
+                    stuffFactory.newDireZombie(z, player);
                 }
             }
 
             // Unicorn zombies
             if (z == world.depth() - 1) {
                 for (int i = 0; i < z + 2; i++) {
-                    stuffFactory.newZombie(z, player);
+                    stuffFactory.newUnicornZombie(z, player);
                 }
             }
         }

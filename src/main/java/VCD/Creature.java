@@ -415,8 +415,9 @@ public class Creature {
     private void leaveCorpse(){
         Item corpse = new Item('%', color, name + " corpse");
         corpse.modifyFoodValue(maxHp * 3);
-        if (this.isPoisonous)
+        if (this.isPoisonous) {
             corpse.modifyFoodValue(maxHp * -3);
+        }
         world.addAtEmptySpace(corpse, x, y, z);
     }
 
