@@ -68,6 +68,9 @@ public class Creature {
     private int level;
     public int level() { return level; }
 
+    private boolean isPoisonous;
+    public boolean isPoisonous() { return isPoisonous; }
+
 
     public Creature(World world, String name, char glyph, Color color, int maxHp, int attack, int defense) {
         this.world = world;
@@ -83,6 +86,7 @@ public class Creature {
         this.maxFood = 1000;
         this.food = maxFood / 3 * 2;
         this.level = 1;
+        this.isPoisonous = false;
     }
 
     // Call an update on creature
@@ -232,6 +236,21 @@ public class Creature {
         }
     }
 
+    private void getRidOf(Item item){
+        inventory.remove(item);
+        unequip(item);
+    }
+
+    private void putAt(Item item, int wx, int wy, int wz){
+        inventory.remove(item);
+        unequip(item);
+        world.addAtEmptySpace(item, wx, wy, wz);
+    }
+
+    public void changePoisonous(boolean poisonous) {
+        this.isPoisonous = poisonous;
+    }
+
 
     public void throwItem(Item item, int wx, int wy, int wz) {
         Point end = new Point(x, y, 0);
@@ -336,6 +355,11 @@ public class Creature {
 
         other.modifyHp(-amount);    // Change defenders hp
 
+        if (other.isPoisonous) {
+            this.modifyHp(-5);
+            other.doAction("deliver painful sting to %s", name);
+        }
+
         if (other.hp < 1)
             gainXp(other);
     }
@@ -391,6 +415,8 @@ public class Creature {
     private void leaveCorpse(){
         Item corpse = new Item('%', color, name + " corpse");
         corpse.modifyFoodValue(maxHp * 3);
+        if (this.isPoisonous)
+            corpse.modifyFoodValue(maxHp * -3);
         world.addAtEmptySpace(corpse, x, y, z);
     }
 

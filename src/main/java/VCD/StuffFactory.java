@@ -13,6 +13,9 @@ public class StuffFactory {
         this.fov = fov;
     }
 
+
+
+    // Return back top of the world with this item to win
     public Item newVictoryItem(int depth) {
         Item item = new Item('*', AsciiPanel.brightWhite, "Wizards Orb");
         world.addAtEmptyLocation(item, depth);
@@ -20,9 +23,9 @@ public class StuffFactory {
     }
 
 
-
+    // Player character
     public Creature newPlayer(List<String> messages, FieldOfView fov){
-        Creature player = new Creature(world, "Player", '@', AsciiPanel.brightWhite, 100, 20, 5);
+        Creature player = new Creature(world, "you", '@', AsciiPanel.brightWhite, 100, 20, 5);
         world.addAtEmptyLocation(player, 0);
         new PlayerAi(player, messages, fov);
         return player;
@@ -30,11 +33,20 @@ public class StuffFactory {
     }
 
 
-
-    public Creature newFungus(int depth){
-        Creature fungus = new Creature(world, "fungus", 'f', AsciiPanel.green, 10, 0, 0);
+    // F
+    public Creature newCreepyCaveFungus(int depth){
+        Creature fungus = new Creature(world, "creepy cave fungus", 'f', AsciiPanel.green, 10, 0, 0);
         world.addAtEmptyLocation(fungus, depth);
         new FungusAi(fungus, this);
+        return fungus;
+    }
+
+
+    public Creature newPoisonFungus(int depth){
+        Creature fungus = new Creature(world, "poison fungus", 'f', AsciiPanel.red, 15, 0, 0);
+        world.addAtEmptyLocation(fungus, depth);
+        new FungusAi(fungus, this);
+        fungus.changePoisonous(true);
         return fungus;
     }
 
@@ -45,6 +57,14 @@ public class StuffFactory {
         return bat;
     }
 
+    public Creature newRat(int depth, Creature player) {
+        Creature rat = new Creature(world, "bat", 'r', AsciiPanel.black, 15, 3, 0);
+        world.addAtEmptyLocation(rat, depth);
+        new ZombieAi(rat, player);
+        return rat;
+    }
+
+
     public Creature newZombie(int depth, Creature player){
         Creature zombie = new Creature(world, "zombie", 'z', AsciiPanel.white, 50, 10, 10);
         world.addAtEmptyLocation(zombie, depth);
@@ -52,6 +72,21 @@ public class StuffFactory {
         return zombie;
     }
 
+
+    public Creature newDireZombie(int depth, Creature player){
+        Creature zombie = new Creature(world, "dire zombie", 'z', AsciiPanel.brightGreen, 75, 15, 10);
+        world.addAtEmptyLocation(zombie, depth);
+        new ZombieAi(zombie, player);
+        return zombie;
+    }
+
+
+    public Creature newUnicornZombie(int depth, Creature player){
+        Creature zombie = new Creature(world, "unicorn zombie", 'z', AsciiPanel.brightMagenta, 30, 30, 5);
+        world.addAtEmptyLocation(zombie, depth);
+        new ZombieAi(zombie, player);
+        return zombie;
+    }
 
 
 
@@ -63,8 +98,17 @@ public class StuffFactory {
         return rock;
     }
 
-    public Item newDagger(int depth){
-        Item item = new Item(')', AsciiPanel.white, "dagger");
+    public Item newMoss(int depth) {
+        Item mossyClump = new Item('.', AsciiPanel.green, "mossy clump");
+        mossyClump.modifyThrownAttackValue(0);
+        world.addAtEmptyLocation(mossyClump, depth);
+        return mossyClump;
+    }
+
+
+
+    public Item newPointyStick(int depth){
+        Item item = new Item(')', AsciiPanel.blue, "pointy stick");
         item.modifyAttackValue(5);
         item.modifyThrownAttackValue(item.attackValue() / 2);
         world.addAtEmptyLocation(item, depth);
@@ -72,15 +116,15 @@ public class StuffFactory {
     }
 
     public Item newSword(int depth){
-        Item item = new Item(')', AsciiPanel.brightWhite, "sword");
+        Item item = new Item(')', AsciiPanel.brightWhite, "rusty sword");
         item.modifyAttackValue(10);
         item.modifyThrownAttackValue(item.attackValue() / 2);
         world.addAtEmptyLocation(item, depth);
         return item;
     }
 
-    public Item newStaff(int depth){
-        Item item = new Item(')', AsciiPanel.yellow, "staff");
+    public Item newClobberinStick(int depth){
+        Item item = new Item(')', AsciiPanel.yellow, "clobberin' stick");
         item.modifyAttackValue(5);
         item.modifyDefenseValue(3);
         item.modifyThrownAttackValue(item.attackValue() / 2);
@@ -89,8 +133,8 @@ public class StuffFactory {
     }
 
 
-    public Item newBow(int depth) {
-        Item item = new Item(')', AsciiPanel.yellow, "bow");
+    public Item newSlingshot(int depth) {
+        Item item = new Item('y', AsciiPanel.yellow, "slingshot");
         item.modifyAttackValue(1);
         item.modifyRangedAttackValue(5);
         world.addAtEmptyLocation(item, depth);
@@ -99,7 +143,7 @@ public class StuffFactory {
 
 
     public Item newLightArmor(int depth){
-        Item item = new Item('[', AsciiPanel.green, "tunic");
+        Item item = new Item('[', AsciiPanel.green, "t shirt");
         item.modifyDefenseValue(2);
         item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
@@ -107,7 +151,7 @@ public class StuffFactory {
     }
 
     public Item newMediumArmor(int depth){
-        Item item = new Item('[', AsciiPanel.white, "chainmail");
+        Item item = new Item('[', AsciiPanel.white, "magic t-shirt of protection");
         item.modifyDefenseValue(4);
         item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
@@ -115,7 +159,7 @@ public class StuffFactory {
     }
 
     public Item newHeavyArmor(int depth){
-        Item item = new Item('[', AsciiPanel.brightWhite, "platemail");
+        Item item = new Item('[', AsciiPanel.brightWhite, "hockey equipment");
         item.modifyDefenseValue(6);
         item.modifyThrownAttackValue(2);
         world.addAtEmptyLocation(item, depth);
@@ -125,10 +169,10 @@ public class StuffFactory {
 
     public Item randomWeapon(int depth){
         switch ((int)(Math.random() * 3)){
-            case 0: return newDagger(depth);
+            case 0: return newPointyStick(depth);
             case 1: return newSword(depth);
-            case 2: return newBow(depth);
-            default: return newStaff(depth);
+            case 2: return newSlingshot(depth);
+            default: return newClobberinStick(depth);
         }
     }
 

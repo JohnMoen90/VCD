@@ -23,11 +23,19 @@ public class FungusAi extends CreatureAi {
             return;
 
 
-        Creature child = factory.newFungus(creature.z);
-        child.x = x;
-        child.y = y;
-        child.z = creature.z;
-        spreadcount++;
+       if (creature.isPoisonous()) {
+           Creature child = factory.newPoisonFungus(creature.z);
+           child.x = x;
+           child.y = y;
+           child.z = creature.z;
+           spreadcount++;
+       } else {
+           Creature child = factory.newCreepyCaveFungus(creature.z);
+           child.x = x;
+           child.y = y;
+           child.z = creature.z;
+           spreadcount++;
+       }
 
     }
 }

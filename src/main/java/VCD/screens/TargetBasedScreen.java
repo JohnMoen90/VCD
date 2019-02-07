@@ -55,6 +55,7 @@ public abstract class TargetBasedScreen implements Screen {
             case KeyEvent.VK_U: x++; y--; break;
             case KeyEvent.VK_B: x--; y++; break;
             case KeyEvent.VK_N: x++; y++; break;
+            case KeyEvent.VK_F:
             case KeyEvent.VK_ENTER: selectWorldCoordinate(player.x + x, player.y + y, sx + x, sy + y); return null;
             case KeyEvent.VK_ESCAPE: return null;
         }

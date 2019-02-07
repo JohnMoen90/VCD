@@ -28,7 +28,7 @@ public class PlayScreen implements Screen {
 
         // World variables
         screenWidth = 80;   // Current defaults TODO: init file for variables
-        screenHeight = 23;
+        screenHeight = 23;  // old 80 x 23
         messages = new ArrayList<String>();
 
         createWorld();
@@ -45,19 +45,40 @@ public class PlayScreen implements Screen {
 
         for (int z = 0; z < world.depth(); z++) {
 
-            // Bats per fungus
-            for (int i = 0; i < 8; i++) {   //Hard coded for testing
-                stuffFactory.newFungus(z);
+            // Fungus per floor
+            for (int i = 0; i < 8; i++) {   //Hard coded for now
+                stuffFactory.newCreepyCaveFungus(z);
+                if (i % 2 == 0)
+                    stuffFactory.newPoisonFungus(z);
             }
 
             // Bats per floor
-            for (int i = 0; i < 20; i++) {   //Hard coded for testing
+            for (int i = 0; i < 20; i++) {   //Hard coded for now
                 stuffFactory.newBat(z);
             }
 
-            //
+            // Rats per floor
+            for (int i = 0; i < 10; i++) {   //Hard coded for now
+                stuffFactory.newRat(z, player);
+            }
+
+            // Reg zombies
             for (int i = 0; i < z + 3; i++) {
                 stuffFactory.newZombie(z, player);
+            }
+
+            // Dire zombies
+            if (z > world.depth() - 2) {
+                for (int i = 0; i < z + 1; i++) {
+                    stuffFactory.newZombie(z, player);
+                }
+            }
+
+            // Unicorn zombies
+            if (z == world.depth() - 1) {
+                for (int i = 0; i < z + 2; i++) {
+                    stuffFactory.newZombie(z, player);
+                }
             }
         }
     }
@@ -68,6 +89,11 @@ public class PlayScreen implements Screen {
             // Rocks
             for (int i = 0; i < world.width() * world.height() / 40; i++) {
                 factory.newRock(z);
+            }
+
+            // Mossy clumps
+            for (int i = 0; i < world.width() * world.height() / 60; i++) {
+                factory.newMoss(z);
             }
 
             // Weapons and armor

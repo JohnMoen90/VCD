@@ -14,6 +14,9 @@ public class ZombieAi extends CreatureAi {
         if (Math.random() < 0.2)
             return;
 
+        if (Math.random() < 0.2 && creature.name().equals("rat"));
+            wander();
+
         if (creature.canSee(player.x, player.y, player.z))
             hunt(player);
         else
